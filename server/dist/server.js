@@ -1,28 +1,24 @@
-import { ApolloServer } from '@apollo/server';
-import { expressMiddleware } from '@apollo/server/express4';
-import { ApolloServerPluginDrainHttpServer } from '@apollo/server/plugin/drainHttpServer';
-import express from 'express';
-import http from 'http';
-import cors from 'cors';
-import bodyParser from 'body-parser';
+import { ApolloServer } from "@apollo/server";
+import { expressMiddleware } from "@apollo/server/express4";
+import { ApolloServerPluginDrainHttpServer } from "@apollo/server/plugin/drainHttpServer";
+import express from "express";
+import http from "http";
+import cors from "cors";
+import bodyParser from "body-parser";
 import { resolvers } from "./resolver";
 import { typeDefs } from "./userSchema";
-const allowedOrigins = [
-    'http://localhost:3000',
-    'http://localhost:4000',
-    "*"
-];
+const allowedOrigins = ["http://localhost:3000", "http://localhost:4000", "*"];
 const corsOptions = {
     origin: (origin, callback) => {
         if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
             callback(null, true);
         }
         else {
-            callback(new Error('Not allowed by CORS'));
+            callback(new Error("Not allowed by CORS"));
         }
     },
     credentials: true,
-    optionsSuccessStatus: 200
+    optionsSuccessStatus: 200,
 };
 const PORT = process.env.PORT || 4000;
 const app = express();
@@ -34,7 +30,7 @@ const server = new ApolloServer({
     plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
 });
 await server.start();
-app.use('/', cors(corsOptions), bodyParser.json(), expressMiddleware(server, {
+app.use("/", cors(corsOptions), bodyParser.json(), expressMiddleware(server, {
     context: async ({ req }) => ({ token: req.headers.token }),
 }));
 await new Promise((resolve) => httpServer.listen({ port: PORT }, resolve));

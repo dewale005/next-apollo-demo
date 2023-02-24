@@ -1,10 +1,13 @@
-import { withData } from 'next-apollo'
-import { HttpLink } from 'apollo-link-http'
+import fetch from 'cross-fetch'
+import { ApolloClient, HttpLink, InMemoryCache } from '@apollo/client'
 
-const apolloConfig = {
+const client = new ApolloClient({
   link: new HttpLink({
-    uri: 'http://localhost:3310/graphql'
-  })
-}
+    // uri: 'http://localhost:4000',
+    uri: 'https://next-apollo-demo-api.onrender.com',
+    fetch,
+  }),
+  cache: new InMemoryCache(),
+})
 
-export default withData(apolloConfig)
+export default client

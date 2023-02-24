@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
-import { User } from '@/types/auto-generated'
+import { User } from '../types/auto-generated'
 import { useLazyQuery } from '@apollo/client'
-import { getUsersQuery } from '@/queries/users.query'
+import { getUsersQuery } from '../queries/user.query'
 import Link from 'next/link'
 
 type Props = {
